@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "med+capsule",
+    "slug": "med-capsule",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "medcapsule",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": false,
+    "splash": {
+      "backgroundColor": "#F7F8FC",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.medcapsule.app",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
+      }
+    },
+    "android": {
+      "package": "com.medcapsule.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#4C6FFF"
+      },
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "SCHEDULE_EXACT_ALARM",
+        "POST_NOTIFICATIONS",
+        "VIBRATE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#4C6FFF",
+          "defaultChannel": "medication-reminders"
+        }
+      ]
+    ],
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "name": "med+capsule",
+      "shortName": "med+capsule",
+      "themeColor": "#4C6FFF",
+      "backgroundColor": "#F7F8FC",
+      "display": "standalone",
+      "orientation": "portrait",
+      "description": "A visual medication reminder and tracker."
+    }
+  }
+}
