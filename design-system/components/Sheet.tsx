@@ -164,12 +164,12 @@ export function Sheet({
       </Animated.View>
 
       {asDialog ? (
-        // A non-interactive centring layer: `pointerEvents="box-none"` lets clicks
-        // outside the panel fall through to the scrim above, so click-away still
-        // dismisses.
+        // A non-interactive centring layer: `box-none` lets clicks outside the
+        // panel fall through to the scrim above, so click-away still dismisses.
+        // Set via style, not the prop — react-native-web deprecates the prop form.
         <View
-          pointerEvents="box-none"
           style={{
+            pointerEvents: 'box-none',
             ...theme.layout.fill,
             position: 'absolute',
             top: 0,

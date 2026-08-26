@@ -81,10 +81,10 @@ export function AppNavBar({ state, descriptors, navigation }: BottomTabBarProps)
         }}
       >
         {items.map((item) => (
-          // Vertical: icon over a caption label, each item a fixed width. A row
-          // layout here makes every item as wide as its longest word, which
-          // overflows a 390pt phone and drags the whole page wider than the
-          // viewport.
+          // Vertical: icon over a caption label, the three sharing the width.
+          // A row layout here sizes each item to its icon plus its label, and
+          // three of those do not fit across a 390pt phone — 'Medications' alone
+          // is most of a third of the bar.
           <NavItem key={item.routeKey} {...item} orientation="vertical" showLabel />
         ))}
       </Row>

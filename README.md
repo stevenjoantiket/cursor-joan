@@ -229,10 +229,12 @@ screen reader or limited motor control.
 
 ## Running it
 
-**The dev server requires Node 18+.** This machine has Node 16, which Expo SDK 51
-does not support, so `expo start` needs an upgrade (`nvm install 20 && nvm use 20`).
-The web *export* does run on Node 16, which is how the browser bundle is currently
-being checked.
+**Node 18+ is what Expo SDK 51 supports**, but both `expo start` and
+`expo export` were verified working on Node 16 here. What does break on this
+machine is the iOS simulator probe (`xcrun simctl` exits 72), which is a broken
+Xcode command-line-tools install rather than anything to do with Node — the same
+breakage takes out `/usr/bin/git` and `/usr/bin/python3`. Repair with
+`sudo xcode-select -s /Library/Developer/CommandLineTools`.
 
 ```bash
 npm install
@@ -247,6 +249,17 @@ npx serve dist                                     # then open the three widths
 
 Notifications need a **physical device** — simulators cannot receive them, and
 `requestPermission()` reports `undetermined` rather than a false denial there.
+
+### Deploying the web build
+
+`vercel.json` builds with `npm run build` (`expo export --platform web`) and serves
+`dist/`. The rewrite that sends every unmatched path to `index.html` is not
+boilerplate: `app.json` sets `web.output: "single"`, so `/medications` is a
+client-side route with no file behind it, and without the rewrite every URL except
+`/` returns 404 on a hard load or a refresh.
+
+Note that a production export sets `__DEV__` false, which disables the demo seed —
+a fresh deployment therefore opens on the real first-run empty state.
 
 ---
 
