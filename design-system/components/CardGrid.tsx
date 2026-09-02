@@ -9,18 +9,42 @@
  * "two column" grid would silently render as one. The final row is left-aligned
  * rather than stretched, so three cards in a two-column grid don't produce one
  * double-width card.
+ *
+ * Cards in the same row are given equal height. A flex-wrap row already stretches
+ * its item wrappers to the tallest in the line, but a card sizes itself to its own
+ * content and leaves the rest of the wrapper empty — so a medication with a stock
+ * warning made its neighbours look misaligned rather than merely shorter. Each
+ * child is therefore cloned with `flex: 1` so it fills the height the row already
+ * gave it. Pass `equalHeight={false}` for content that should keep its natural
+ * height.
  */
 import React from 'react';
 import { View } from 'react-native';
 import { useBreakpoint, useTheme } from '../theme';
 
+/**
+ * Adds `flex: 1` to a child so it fills its wrapper's height. Anything that is
+ * not an element (a bare string) is returned untouched, and an existing style is
+ * kept — RN flattens nested style arrays, so appending is safe.
+ */
+function stretch(child: React.ReactNode): React.ReactNode {
+  if (!React.isValidElement(child)) return child;
+  const existing = (child.props as { style?: unknown }).style;
+  return React.cloneElement(child as React.ReactElement<{ style?: unknown }>, {
+    style: [existing, { flex: 1 }],
+  });
+}
+
 export function CardGrid({
   children,
   /** Cap the column count below what the breakpoint would otherwise allow. */
   maxColumns,
+  /** Let each card keep its natural height, leaving row bottoms ragged. */
+  equalHeight = true,
 }: {
   children: React.ReactNode;
   maxColumns?: number;
+  equalHeight?: boolean;
 }) {
   const theme = useTheme();
   const breakpoint = useBreakpoint();
@@ -57,7 +81,7 @@ export function CardGrid({
             minWidth: 0,
           }}
         >
-          {child}
+          {equalHeight ? stretch(child) : child}
         </View>
       ))}
     </View>

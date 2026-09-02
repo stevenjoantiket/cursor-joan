@@ -8,6 +8,25 @@ import { Platform, type ViewStyle } from 'react-native';
 
 export type ElevationLevel = 0 | 1 | 2 | 3;
 
+/**
+ * `#RRGGBB` (or `#RGB`) plus an opacity, as a CSS `rgba()` string.
+ *
+ * Only needed for the web branch below: native takes colour and opacity as two
+ * separate style props, whereas a CSS box-shadow carries the alpha in the colour.
+ * A value that isn't a hex triple is passed through untouched, so a theme is free
+ * to hand us an `rgba()` shadow already.
+ */
+function withAlpha(color: string, opacity: number): string {
+  const hex = color.trim();
+  const short = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(hex);
+  const full = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
+  if (!short && !full) return hex;
+  const [r, g, b] = short
+    ? short.slice(1).map((c) => parseInt(c + c, 16))
+    : full!.slice(1).map((c) => parseInt(c, 16));
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
 export function elevation(level: ElevationLevel, shadowColor: string): ViewStyle {
   if (level === 0) return {};
 
@@ -25,12 +44,14 @@ export function elevation(level: ElevationLevel, shadowColor: string): ViewStyle
       shadowOffset: { width: 0, height: spec.offsetY },
     },
     android: { elevation: spec.android, shadowColor },
+    // Web. react-native-web deprecates the `shadow*` props in favour of CSS
+    // `boxShadow`, and warned once per elevated surface. A CSS blur radius is
+    // roughly half the native shadowRadius, so it is halved here to keep the
+    // three levels looking the same on both targets.
     default: {
-      shadowColor,
-      shadowOpacity: spec.opacity,
-      shadowRadius: spec.radius,
-      shadowOffset: { width: 0, height: spec.offsetY },
-    },
+      boxShadow: `0px ${spec.offsetY}px ${spec.radius / 2}px ${withAlpha(shadowColor, spec.opacity)}`,
+      // Not in RN 0.74's ViewStyle type yet, though react-native-web reads it.
+    } as unknown as ViewStyle,
   }) as ViewStyle;
 }
 

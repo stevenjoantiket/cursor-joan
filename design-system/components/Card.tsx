@@ -10,8 +10,8 @@
  * since there is no touch to try it with.
  */
 import React, { useState } from 'react';
-import { Pressable, View, type ViewStyle } from 'react-native';
-import { useTheme } from '../theme';
+import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
+import { decorative, useTheme } from '../theme';
 import type { ElevationLevel, SpaceToken } from '../tokens';
 
 export type CardTone = 'default' | 'muted' | 'brand' | 'success' | 'warning' | 'danger';
@@ -29,7 +29,7 @@ export type CardProps = {
   onLongPress?: () => void;
   accessibilityLabel?: string;
   accessibilityHint?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   testID?: string;
 };
 
@@ -73,8 +73,7 @@ export function Card({
     <>
       {accentColor ? (
         <View
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
+          {...decorative}
           style={{
             position: 'absolute',
             left: 0,

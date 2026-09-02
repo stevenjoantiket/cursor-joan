@@ -5,9 +5,9 @@
  * you nothing about how the timeline, pill artwork, badges or adherence figures
  * actually look — so this seeds a plausible day.
  *
- * Guard rails: it runs only when `__DEV__` is true AND the database is empty, and
- * it is called from exactly one place (the store's initial load). A production
- * build strips it, and it can never overwrite real records.
+ * Guard rails: it runs only when seeding is enabled AND the database is empty, and
+ * it is called from exactly one place (the store's initial load). It can never
+ * overwrite real records.
  */
 import type { DoseLog, Medication } from '../domain/types';
 import { resolveDailyTimes } from '../domain/schedule';
@@ -17,6 +17,23 @@ import { upsertDoseLog } from './repositories/doseLogRepo';
 
 /** Flip to false to preview the true first-run experience. */
 export const SEED_DEMO_DATA = true;
+
+/**
+ * Whether the demo seed is allowed to run at all.
+ *
+ * `__DEV__` covers local development. `EXPO_PUBLIC_DEMO_SEED=1` is a deliberate
+ * opt-in for a hosted preview: a production export sets `__DEV__` false, so a
+ * deployment whose whole purpose is to show the app would otherwise open on the
+ * first-run empty state and read as broken. Expo inlines `EXPO_PUBLIC_*` at
+ * build time, so this costs nothing at runtime.
+ *
+ * It is opt-in rather than on-by-default because this is a medication tracker.
+ * Invented prescriptions must never appear next to somebody's real ones, so a
+ * build that says nothing gets no demo data. Drop the variable from the build
+ * environment and the deployment is a true first run again.
+ */
+export const DEMO_SEED_ENABLED =
+  __DEV__ || process.env.EXPO_PUBLIC_DEMO_SEED === '1';
 
 type Seed = Omit<Medication, 'id' | 'createdAt' | 'updatedAt' | 'archivedAt' | 'status'>;
 
@@ -100,7 +117,7 @@ function buildSeeds(today: string): Seed[] {
  * Returns true if anything was written.
  */
 export async function seedDemoDataIfEmpty(): Promise<boolean> {
-  if (!SEED_DEMO_DATA) return false;
+  if (!SEED_DEMO_DATA || !DEMO_SEED_ENABLED) return false;
 
   const existing = await listMedications();
   if (existing.length > 0) return false;

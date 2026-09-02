@@ -213,7 +213,8 @@ export function MedicationStoreProvider({ children }: { children: React.ReactNod
         await reminders.registerDoseActions();
 
         // Dev only, and only when there is nothing to lose — see devSeed.ts.
-        if (__DEV__) await seedDemoDataIfEmpty();
+        // Gated inside — see DEMO_SEED_ENABLED.
+        await seedDemoDataIfEmpty();
 
         let { medications, logs } = await loadAll(initialState.selectedDate);
         const archivedAny = await runArchiveSweep(medications);

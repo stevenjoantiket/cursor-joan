@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { View, type ViewProps, type ViewStyle } from 'react-native';
-import { useTheme } from '../theme';
+import { decorative, useTheme } from '../theme';
 import type { SpaceToken } from '../tokens';
 
 type StackProps = ViewProps & {
@@ -54,8 +54,7 @@ export function Divider({ inset = false }: { inset?: boolean }) {
   const theme = useTheme();
   return (
     <View
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+      {...decorative}
       style={{
         height: theme.borderWidth.hairline,
         backgroundColor: theme.colors.hairline,

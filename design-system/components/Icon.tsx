@@ -7,7 +7,7 @@
  */
 import React from 'react';
 import Svg, { Circle, G, Line, Path, Rect } from 'react-native-svg';
-import { useTheme } from '../theme';
+import { decorative, meaningful, useTheme } from '../theme';
 
 export type IconName =
   | 'check'
@@ -332,8 +332,7 @@ export function Icon({
       viewBox="0 0 24 24"
       accessibilityRole={accessibilityLabel ? 'image' : undefined}
       accessibilityLabel={accessibilityLabel}
-      accessibilityElementsHidden={!accessibilityLabel}
-      importantForAccessibility={accessibilityLabel ? 'yes' : 'no-hide-descendants'}
+      {...(accessibilityLabel ? meaningful : decorative)}
     >
       <G
         fill="none"

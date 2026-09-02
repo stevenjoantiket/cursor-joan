@@ -8,7 +8,7 @@
  */
 import React from 'react';
 import { View } from 'react-native';
-import { Icon, Text, useTheme, type IconName } from '@ds';
+import { decorative, Icon, Text, useTheme, type IconName } from '@ds';
 import type { DoseStatus } from '../../../domain/types';
 import { formatClockTime } from '../../../utils/date';
 
@@ -38,8 +38,7 @@ export function TimelineRail({
   return (
     <View
       style={{ width: theme.layout.timelineRailWidth, alignItems: 'center' }}
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+      {...decorative}
     >
       <Text variant="mono" tone="secondary" align="center">
         {formatClockTime(time)}

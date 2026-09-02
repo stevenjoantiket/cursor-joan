@@ -9,7 +9,7 @@
  * it achieved and offers Reactivate directly.
  */
 import React, { useEffect, useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { View, type StyleProp, type ViewStyle } from 'react-native';
 import {
   Badge,
   Button,
@@ -124,10 +124,13 @@ function ArchivedCard({
   medication,
   onOpen,
   onReactivate,
+  style,
 }: {
   medication: Medication;
   onOpen: () => void;
   onReactivate: () => void;
+  /** Forwarded to the Card so <CardGrid> can give a row equal-height cards. */
+  style?: StyleProp<ViewStyle>;
 }) {
   const theme = useTheme();
   const store = useMedications();
@@ -158,7 +161,7 @@ function ArchivedCard({
         : theme.colors.danger;
 
   return (
-    <Card onPress={onOpen} accessibilityHint="Opens the full history for this medication">
+    <Card onPress={onOpen} accessibilityHint="Opens the full history for this medication" style={style}>
       <View style={{ gap: theme.space.lg }}>
         <Row gap="lg">
           <PillShape form={medication.form} ink={medication.ink} size={44} muted />

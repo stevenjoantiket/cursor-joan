@@ -258,8 +258,16 @@ boilerplate: `app.json` sets `web.output: "single"`, so `/medications` is a
 client-side route with no file behind it, and without the rewrite every URL except
 `/` returns 404 on a hard load or a refresh.
 
-Note that a production export sets `__DEV__` false, which disables the demo seed —
-a fresh deployment therefore opens on the real first-run empty state.
+**Demo data on a deployment.** A production export sets `__DEV__` false, so the
+demo seed is off and the app opens on the real first-run empty state — correct for a
+product, and useless for a link you want to show someone. `vercel.json` therefore
+sets `EXPO_PUBLIC_DEMO_SEED=1` for the build, which `DEMO_SEED_ENABLED` in
+`devSeed.ts` also accepts.
+
+It is opt-in rather than on-by-default on purpose: this is a medication tracker, and
+invented prescriptions must never share a screen with somebody's real ones. Remove
+that variable from the build environment and the deployment is a true first run
+again.
 
 ---
 

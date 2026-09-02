@@ -15,7 +15,7 @@
  */
 import React, { useCallback, useMemo, useRef } from 'react';
 import { Animated, PanResponder, View, type ViewStyle } from 'react-native';
-import { useReducedMotion, useTheme } from '../theme';
+import { decorative, useReducedMotion, useTheme } from '../theme';
 import { Icon, type IconName } from './Icon';
 import { Text } from './Text';
 
@@ -162,8 +162,7 @@ function RevealPane({
 
   return (
     <Animated.View
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+      {...decorative}
       style={{
         position: 'absolute',
         top: 0,

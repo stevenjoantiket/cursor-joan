@@ -8,7 +8,7 @@
  * far through it the user is, and stock if tracked.
  */
 import React from 'react';
-import { View } from 'react-native';
+import { View, type StyleProp, type ViewStyle } from 'react-native';
 import {
   Badge,
   Button,
@@ -86,9 +86,12 @@ export function MedicationsScreen({
 function MedicationCard({
   medication,
   onPress,
+  style,
 }: {
   medication: Medication;
   onPress: () => void;
+  /** Forwarded to the Card so <CardGrid> can give a row equal-height cards. */
+  style?: StyleProp<ViewStyle>;
 }) {
   const theme = useTheme();
   const stock = stockLevel(medication);
@@ -97,7 +100,7 @@ function MedicationCard({
   const hasEndDate = medication.duration.endDate !== null;
 
   return (
-    <Card onPress={onPress} accessibilityHint="Opens this medication's full record">
+    <Card onPress={onPress} accessibilityHint="Opens this medication's full record" style={style}>
       <View style={{ gap: theme.space.md }}>
         <Row gap="lg">
           <PillShape form={medication.form} ink={medication.ink} size={48} />

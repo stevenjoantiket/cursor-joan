@@ -18,7 +18,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Modal, Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useBreakpoint, useEscapeKey, useReducedMotion, useTheme } from '../theme';
+import { decorative, useBreakpoint, useEscapeKey, useReducedMotion, useTheme } from '../theme';
 import { IconButton } from './Button';
 import { Row } from '../primitives/Stack';
 import { Text } from './Text';
@@ -103,7 +103,7 @@ export function Sheet({
       {asDialog ? null : (
         <View style={{ alignItems: 'center', paddingTop: theme.space.md }}>
           <View
-            accessibilityElementsHidden
+            {...decorative}
             style={{
               width: 44,
               height: 5,
