@@ -45,7 +45,7 @@ export function SegmentedControl<T extends string>({
   useEffect(() => {
     Animated.spring(thumbX, {
       toValue: selectedIndex * segmentWidth,
-      useNativeDriver: true,
+      useNativeDriver: theme.motion.useNativeDriver,
       friction: theme.motion.spring.friction,
       tension: theme.motion.spring.tension,
     }).start();

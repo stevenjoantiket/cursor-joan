@@ -56,12 +56,18 @@ export function Button({
       if (reducedMotion) return;
       Animated.spring(scale, {
         toValue: value,
-        useNativeDriver: true,
+        useNativeDriver: theme.motion.useNativeDriver,
         friction: theme.motion.spring.friction,
         tension: theme.motion.spring.tension,
       }).start();
     },
-    [scale, reducedMotion, theme.motion.spring.friction, theme.motion.spring.tension],
+    [
+      scale,
+      reducedMotion,
+      theme.motion.useNativeDriver,
+      theme.motion.spring.friction,
+      theme.motion.spring.tension,
+    ],
   );
 
   const sizing = {
@@ -158,7 +164,7 @@ function LoadingDots({ tone }: { tone: 'inverse' | 'primary' | 'brand' | 'danger
       Animated.timing(progress, {
         toValue: 3,
         duration: theme.motion.slow * 3,
-        useNativeDriver: true,
+        useNativeDriver: theme.motion.useNativeDriver,
       }),
     );
     loop.start();

@@ -50,7 +50,7 @@ export function SwipeableRow({
   const springBack = useCallback(() => {
     Animated.spring(translateX, {
       toValue: 0,
-      useNativeDriver: true,
+      useNativeDriver: theme.motion.useNativeDriver,
       friction: theme.motion.spring.friction,
       tension: theme.motion.spring.tension,
     }).start();
@@ -69,7 +69,7 @@ export function SwipeableRow({
       Animated.timing(translateX, {
         toValue: direction * 480,
         duration: theme.motion.base,
-        useNativeDriver: true,
+        useNativeDriver: theme.motion.useNativeDriver,
       }).start(() => {
         onDone();
         // Reset instantly so the row is neutral if it survives in the list.

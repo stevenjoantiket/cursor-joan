@@ -41,4 +41,15 @@ export const motion = {
   slow: 320,
   /** Spring used when a swiped row snaps back. */
   spring: { friction: 9, tension: 90 },
+  /**
+   * Whether an animation may be handed to the native driver.
+   *
+   * The native driver runs an animation on the UI thread, off the JS thread —
+   * which is why every animation in this design system asks for it. There is no
+   * such thread on the web: react-native-web has no `RCTAnimation` module, so
+   * asking for it there logs a warning on every single press and falls back to
+   * the JS driver anyway. Passing this constant gets the same behaviour without
+   * the console noise, and keeps the decision in one place rather than six.
+   */
+  useNativeDriver: Platform.OS !== 'web',
 } as const;

@@ -55,7 +55,7 @@ export function Sheet({
       // Reduce Motion keeps the fade but drops the travel to zero duration, so the
       // sheet appears in place rather than rushing up the screen.
       duration: reducedMotion ? 0 : visible ? theme.motion.base : theme.motion.fast,
-      useNativeDriver: true,
+      useNativeDriver: theme.motion.useNativeDriver,
     }).start();
   }, [visible, slide, reducedMotion, theme.motion.base, theme.motion.fast]);
 
